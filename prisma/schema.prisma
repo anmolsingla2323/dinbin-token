@@ -1,0 +1,23 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Token {
+  id          String   @id @default(cuid())
+  token       String   @unique
+  userId      String
+  fingerprint String
+  deviceId    String
+  sessionId   String
+  createdAt   DateTime @default(now())
+  isRevoked   Boolean  @default(false)
+
+  @@index([token])
+  @@index([userId])
+  @@index([sessionId])
+}
